@@ -15,6 +15,10 @@ chmod +x build.sh
 cp test_lib.so ~/storage/shared/Download
 ```
 
+```
+cp build/test_lib.so ~/storage/shared/retroarch/downloads
+```
+
 # ftp
 
 ## Install Required Packages:
@@ -33,3 +37,10 @@ sv up ftpd
 ```
 sv status ftpd
 ```
+
+
+## Stop the Server
+```
+sv down ftpd
+```
+
