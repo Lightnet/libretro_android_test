@@ -14,7 +14,7 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(libretro_common)
 
 # Define the source file
-set(SOURCES libretro.c)
+set(SOURCES src/libretro.c)
 
 # Create the shared library (test_lib.so)
 add_library(test_lib SHARED ${SOURCES})
