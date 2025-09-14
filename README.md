@@ -1,4 +1,13 @@
 
+# termux:
+  It not possible to compile in termux which there no opengles packages.
+
+# Termux packages:
+```
+libandroid-opengl //nope
+
+virglrenderer-android
+```
 
 
 ```
