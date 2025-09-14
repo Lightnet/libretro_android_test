@@ -4,7 +4,7 @@ project(libretro_test C)
 # Enable shared library output for libretro core
 set(BUILD_SHARED_LIBS ON)
 
-# Use FetchContent to download libretro-common
+# Use FetchContent to download libretro-common for glsym.h
 include(FetchContent)
 FetchContent_Declare(
     libretro_common
@@ -13,10 +13,8 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(libretro_common)
 
-# Define the test core source files (adjust based on actual files in libretro-common)
-set(SOURCES
-    ${PROJECT_SOURCE_DIR}/src/libretro.c
-)
+# Define the source file
+set(SOURCES libretro.c)
 
 # Create the shared library (test_lib.so)
 add_library(test_lib SHARED ${SOURCES})
@@ -32,10 +30,21 @@ set_target_properties(test_lib PROPERTIES
     OUTPUT_NAME "test_lib"  # Name the output test_lib.so
 )
 
-# Link any required Android libraries
-target_link_libraries(test_lib PRIVATE log)
+# Find and link OpenGL ES (GLESv2) for Android
+find_library(GLESv2_LIBRARY NAMES GLESv2)
+find_library(LOG_LIBRARY NAMES log)
+target_link_libraries(test_lib PRIVATE
+    ${GLESv2_LIBRARY}
+    ${LOG_LIBRARY}
+)
 
-# Optional: Optimize for ARM (e.g., NEON)
+# Optimize for ARM (e.g., NEON)
 if(CMAKE_SYSTEM_PROCESSOR MATCHES "arm" OR CMAKE_SYSTEM_PROCESSOR MATCHES "aarch64")
     target_compile_options(test_lib PRIVATE -mfpu=neon)
 endif()
+
+# Define OpenGL ES version for glsym
+target_compile_definitions(test_lib PRIVATE
+    GL_GLEXT_PROTOTYPES
+    EGL_EGLEXT_PROTOTYPES
+)
